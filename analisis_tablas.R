@@ -1,19 +1,26 @@
+# Función para hacer subset de la línea de texto desde la derecha.
 substrRight <- function(x, n){
   substr(x, nchar(x)-n+1, nchar(x))
 }
 
-
+# Función que lee todos los archivos de anotaciones y devuelve vector con todos los genes.
 get_genes_list <- function(path_to_files){
+  # lista de archivos
   kegg_files <- list.files(path=path_to_files)
   genes_vector <- c()
+  # procesar rodos los archivos en el path
   for(cfile in kegg_files){
+    # excluit los archivos log
     if(substrRight(cfile, 4) == ".txt"){
       print(cfile)
+      # leer cada línea de los archivos
       current_file_lines_list <- readLines(paste(path_to_files, cfile, sep = ""))
       for(linea in current_file_lines_list){
+        # tomar el nombre de cada gen.
         current_split_line <- strsplit(linea, split = "\t")
         if (length(current_split_line[[1]]) == 2) {
           print(current_split_line[[1]])
+          # añadir el nombre de cada gen al vector de genes.
           genes_vector <- c(as.character(genes_vector), as.character(current_split_line[[1]][2]))
         }
       }
