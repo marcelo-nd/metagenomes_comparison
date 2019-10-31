@@ -158,4 +158,24 @@ lac_eng_tab <- lac_eng_tab %>%
 
 lac_eng_tab
 
+clos_df_joined <- full_join(clos_hosted_tab, clos_eng_tab, by = "genes")
 
+clos_df_joined
+
+rum_df_joined <- full_join(rum_hosted_tab, rum_eng_tab, by = "genes")
+
+rum_df_joined
+
+lac_df_joined <- full_join(lac_eng_tab, lac_hosted_tab, by = "genes")
+
+lac_df_joined
+
+
+
+final_df <- full_join(clos_df_joined, rum_df_joined, by = "genes")
+
+final_df <- full_join(final_df, lac_df_joined, by = "genes")
+
+final_df
+
+write.table(final_df, file = "C:/Users/marce/Desktop/genes_df.txt", col.names = TRUE, row.names = FALSE, quote=FALSE)
