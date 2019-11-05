@@ -6,10 +6,6 @@ substrRight <- function(x, n){
 }
 
 
-
-###############################################################################################################################################
-###############################################################################################################################################
-
 # función para obtener vector con todos los genes de un archivo de genes, kegg ids. Input: archivo txt
 get_genes_list <- function(genes_file){
   # vector para guardar la lista de genes en kegg id
@@ -30,8 +26,6 @@ get_genes_list <- function(genes_file){
 }
 
 
-
-
 ## Función que lee todos los archivos de anotaciones de MAGs convertidas a keggs ids en un path
 # y devuelve un df [genes kegg ids, MAGs]
 
@@ -48,18 +42,21 @@ get_all_mags_genes <- function(path_to_files){
     # excluir los archivos log
     if(substrRight(cfile, 4) == ".txt"){
       print(cfile)
+      if (cfile == "ASM386229.txt") {
+        
+      }
       # nombre de MAGs partir del nombre del archivo
       current_mag_id <- substr(cfile, 1, nchar(cfile)-4)
-      print(current_mag_id)
+      #debug print(current_mag_id)
       # obtener lista de genes del archivo txt
       current_gene_list <- get_genes_list(paste(path_to_files, cfile, sep = ""))
-      print("lista de genes")
-      print(current_gene_list)
+      #debug print("lista de genes")
+      # debug print(current_gene_list)
       
       # añadir nombre del mag y lista de genes 
       current_genes_df <- as.data.frame(table(current_gene_list), stringsAsFactors = FALSE)
-      print("dataframe de frecuencias")
-      print(current_genes_df)
+      #debug print("dataframe de frecuencias")
+      #debug print(current_genes_df)
       # renombrar columnas
       colnames(current_genes_df) <- c("genes", current_mag_id)
       
@@ -67,6 +64,7 @@ get_all_mags_genes <- function(path_to_files){
       mags_genes <- full_join(mags_genes, current_genes_df, by = "genes")
     }
   }
+  #convert NAs to 0s
   mags_genes[is.na(mags_genes)] <- 0
   return(mags_genes)
 }
@@ -74,53 +72,41 @@ get_all_mags_genes <- function(path_to_files){
 
 
 
-
 clos_hosted_genes <-get_all_mags_genes("C:/Users/marce/OneDrive/converted_anot/clos_hosted_gl/")
 
-clos_eng_genes <- get_genes_list("C:/Users/marce/OneDrive/converted_anot/clos_eng_gl/")
+clos_eng_genes <- get_all_mags_genes("C:/Users/marce/OneDrive/converted_anot/clos_eng_gl/")
 
-rum_hosted_genes <- get_genes_list("C:/Users/marce/OneDrive/converted_anot/rum_hosted_gl/")
+rum_hosted_genes <- get_all_mags_genes("C:/Users/marce/OneDrive/converted_anot/rum_hosted_gl/")
 
-rum_eng_genes <- get_genes_list("C:/Users/marce/OneDrive/converted_anot/rum_eng_gl/")
+rum_eng_genes <- get_all_mags_genes("C:/Users/marce/OneDrive/converted_anot/rum_eng_gl/")
 
-lac_hosted_genes <- get_genes_list("C:/Users/marce/OneDrive/converted_anot/lac_hosted_gl/")
+lac_hosted_genes <- get_all_mags_genes("C:/Users/marce/OneDrive/converted_anot/lac_hosted_gl/")
 
-lac_eng_genes <- get_genes_list("C:/Users/marce/OneDrive/converted_anot/lac_eng_gl/")
+lac_eng_genes <- get_all_mags_genes("C:/Users/marce/OneDrive/converted_anot/lac_eng_gl/")
 
+lac_eng_genes["K10831", "ASM386229"]
 
-#########################################################################################################################################################################
-############################################################################################################################################################
-
-
+lac_eng_genes
 
 
+genes_joined <- full_join(clos_hosted_genes, clos_eng_genes, by = "genes")
 
+genes_joined <- full_join(genes_joined, rum_hosted_genes, by = "genes")
 
+genes_joined <- full_join(genes_joined, rum_eng_genes, by = "genes")
 
+genes_joined <- full_join(genes_joined, lac_hosted_genes, by = "genes")
 
+genes_joined <- full_join(genes_joined, lac_eng_genes, by = "genes")
 
-lac_eng_tab
+genes_joined[is.na(genes_joined)] <- 0
 
-clos_df_joined <- full_join(clos_hosted_tab, clos_eng_tab, by = "genes")
+genes_joined
 
-clos_df_joined
-
-rum_df_joined <- full_join(rum_hosted_tab, rum_eng_tab, by = "genes")
-
-rum_df_joined
-
-lac_df_joined <- full_join(lac_eng_tab, lac_hosted_tab, by = "genes")
-
-lac_df_joined
+genes_joined["K18540", ]
 
 
 
-final_df <- full_join(clos_df_joined, rum_df_joined, by = "genes")
-
-final_df <- full_join(final_df, lac_df_joined, by = "genes")
-
-final_df
 
 
-
-write.table(final_df, file = "C:/Users/marce/Desktop/genes_df.txt", col.names = TRUE, row.names = FALSE, quote=FALSE)
+write.table(genes_joined, file = "C:/Users/marce/Desktop/genes_df.txt", col.names = TRUE, row.names = FALSE, quote=FALSE)
