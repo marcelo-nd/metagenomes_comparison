@@ -36,16 +36,12 @@ get_all_mags_genes <- function(path_to_files){
   
   #data frame para guardar [genes, MAGs(OTUs)]
   mags_genes <- data.frame(genes=character(), stringsAsFactors = FALSE)
-  print 
   
   # procesar rodos los archivos en el path
   for(cfile in kegg_files){
     # excluir los archivos log
     if(substrRight(cfile, 4) == ".txt"){
       print(cfile)
-      if (cfile == "ASM386229.txt") {
-        
-      }
       # nombre de MAGs partir del nombre del archivo
       current_mag_id <- substr(cfile, 1, nchar(cfile)-4)
       #debug print(current_mag_id)
@@ -78,6 +74,24 @@ get_all_mags_genes <- function(path_to_files){
   return(mags_genes)
 }
 
+generate_mags_metadata <- function(path_to_files, pFamily, pOrigin){
+  #lista de todos los archivos en el path
+  kegg_files <- list.files(path=path_to_files) 
+  
+  mags_metadata <- data.frame(mag_id = character(), family = character(), origin = character(), stringsAsFactors = FALSE)
+  
+  counter <- 1
+  
+  for(cfile in kegg_files){
+    if(substrRight(cfile, 4) == ".txt"){
+      mags_metadata[counter, "mag_id"] <- substr(cfile, 1, nchar(cfile)-4)
+      mags_metadata[counter, "family"] <- pFamily
+      mags_metadata[counter, "origin"] <- pOrigin
+      counter <- counter + 1
+    }
+  }
+  return(mags_metadata)
+}
 
 
 
@@ -93,6 +107,8 @@ lac_hosted_genes <- get_all_mags_genes("C:/Users/marce/OneDrive/converted_anot/l
 
 lac_eng_genes <- get_all_mags_genes("C:/Users/marce/OneDrive/converted_anot/lac_eng_gl/")
 
+
+clos_hosted_metadata <-generate_mags_metadata("C:/Users/marce/Downloads/converted_anot/clos_hosted_gl/", "clostridiaceae", "hosted")
 
 ###################################################################################################
 ###################################################################################################
