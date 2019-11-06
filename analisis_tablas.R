@@ -29,6 +29,7 @@ get_genes_list <- function(genes_file){
 ## Función que lee todos los archivos de anotaciones de MAGs convertidas a keggs ids en un path
 # y devuelve un df [genes kegg ids, MAGs]
 
+
 get_all_mags_genes <- function(path_to_files){
   #lista de todos los archivos en el path
   kegg_files <- list.files(path=path_to_files)
@@ -50,15 +51,23 @@ get_all_mags_genes <- function(path_to_files){
       #debug print(current_mag_id)
       # obtener lista de genes del archivo txt
       current_gene_list <- get_genes_list(paste(path_to_files, cfile, sep = ""))
-      #debug print("lista de genes")
-      # debug print(current_gene_list)
+      #print("lista de genes")
+      
+      #print(current_gene_list)
+      #print(length(current_gene_list))
       
       # añadir nombre del mag y lista de genes 
       current_genes_df <- as.data.frame(table(current_gene_list), stringsAsFactors = FALSE)
+      
+      #debug print(current_genes_df[current_genes_df$current_gene_list == "K10831",])
       #debug print("dataframe de frecuencias")
-      #debug print(current_genes_df)
+      #print(current_genes_df)
       # renombrar columnas
       colnames(current_genes_df) <- c("genes", current_mag_id)
+      
+      # debug print(current_genes_df[current_genes_df$genes == "K10831",])
+      
+      #summary(current_genes_df)
       
       # unir el df de la muestra actual con el general.
       mags_genes <- full_join(mags_genes, current_genes_df, by = "genes")
@@ -84,9 +93,27 @@ lac_hosted_genes <- get_all_mags_genes("C:/Users/marce/OneDrive/converted_anot/l
 
 lac_eng_genes <- get_all_mags_genes("C:/Users/marce/OneDrive/converted_anot/lac_eng_gl/")
 
-lac_eng_genes["K10831", "ASM386229"]
 
-lac_eng_genes
+###################################################################################################
+###################################################################################################
+###################################################################################################
+
+clos_hosted_genes <-get_all_mags_genes("C:/Users/marce/Downloads/converted_anot/clos_hosted_gl/")
+
+clos_eng_genes <- get_all_mags_genes("C:/Users/marce/Downloads/converted_anot/clos_eng_gl/")
+
+rum_hosted_genes <- get_all_mags_genes("C:/Users/marce/Downloads/converted_anot/rum_hosted_gl/")
+
+rum_eng_genes <- get_all_mags_genes("C:/Users/marce/Downloads/converted_anot/rum_eng_gl/")
+
+lac_hosted_genes <- get_all_mags_genes("C:/Users/marce/Downloads/converted_anot/lac_hosted_gl/")
+
+lac_eng_genes <- get_all_mags_genes("C:/Users/marce/Downloads/converted_anot/lac_eng_gl/")
+
+
+###################################################################################################
+###################################################################################################
+###################################################################################################
 
 
 genes_joined <- full_join(clos_hosted_genes, clos_eng_genes, by = "genes")
@@ -103,10 +130,37 @@ genes_joined[is.na(genes_joined)] <- 0
 
 genes_joined
 
-genes_joined["K18540", ]
-
-
-
-
-
 write.table(genes_joined, file = "C:/Users/marce/Desktop/genes_df.txt", col.names = TRUE, row.names = FALSE, quote=FALSE)
+
+
+
+
+
+
+
+###################################################################################################
+###################################################################################################
+###################################################################################################
+#TESTS
+# Probando la extracción de los genes
+lista_test <- get_genes_list("C:/Users/marce/Downloads/converted_anot/lac_eng_gl/ASM386229.txt")
+lista_test
+
+# checando un gen 
+for (i in lista_test) {
+  if (i == "K10831") {
+    print("true")
+  }
+  
+}
+
+# checando un gen en un archivo en los df generados
+lac_eng_genes[lac_eng_genes$genes =="K10831", "ASM386229"]
+
+sum(lac_eng_genes[lac_eng_genes$ASM386229 > 0,]$ASM386229)
+
+# checando el df final
+
+genes_joined[genes_joined$genes =="K10831",]
+
+sum(genes_joined[genes_joined$ASM386229 > 0,]$ASM386229)
