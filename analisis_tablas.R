@@ -29,7 +29,6 @@ get_genes_list <- function(genes_file){
 ## Función que lee todos los archivos de anotaciones de MAGs convertidas a keggs ids en un path
 # y devuelve un df [genes kegg ids, MAGs]
 
-
 get_all_mags_genes <- function(path_to_files){
   #lista de todos los archivos en el path
   kegg_files <- list.files(path=path_to_files)
@@ -74,6 +73,8 @@ get_all_mags_genes <- function(path_to_files){
   return(mags_genes)
 }
 
+# función para generar los metadatos de origen y familia para todos los Mags en un folder
+
 generate_mags_metadata <- function(path_to_files, pFamily, pOrigin){
   #lista de todos los archivos en el path
   kegg_files <- list.files(path=path_to_files) 
@@ -94,6 +95,7 @@ generate_mags_metadata <- function(path_to_files, pFamily, pOrigin){
 }
 
 
+### generate genes tables for each group
 
 clos_hosted_genes <-get_all_mags_genes("C:/Users/marce/OneDrive/converted_anot/clos_hosted_gl/")
 
@@ -108,7 +110,48 @@ lac_hosted_genes <- get_all_mags_genes("C:/Users/marce/OneDrive/converted_anot/l
 lac_eng_genes <- get_all_mags_genes("C:/Users/marce/OneDrive/converted_anot/lac_eng_gl/")
 
 
-clos_hosted_metadata <-generate_mags_metadata("C:/Users/marce/Downloads/converted_anot/clos_hosted_gl/", "clostridiaceae", "hosted")
+# joining all dfs
+
+genes_df <- full_join(clos_hosted_genes, clos_eng_genes, by = "genes")
+
+genes_df <- full_join(genes_df, rum_hosted_genes, by = "genes")
+
+genes_df <- full_join(genes_df, rum_eng_genes, by = "genes")
+
+genes_df <- full_join(genes_df, lac_hosted_genes, by = "genes")
+
+genes_df <- full_join(genes_df, lac_eng_genes, by = "genes")
+
+genes_df[is.na(genes_df)] <- 0
+
+genes_df
+
+write.table(genes_df, file = "C:/Users/marce/Desktop/genes_df.txt", col.names = TRUE, row.names = FALSE, quote=FALSE)
+
+
+### generate metadata
+
+clos_hosted_metadata <-generate_mags_metadata("C:/Users/marce/Downloads/converted_anot/clos_hosted_gl/", "Clostridiaceae", "hosted")
+
+clos_eng_metadata <- generate_mags_metadata("C:/Users/marce/OneDrive/converted_anot/clos_eng_gl/", "Clostridiaceae", "engineered")
+
+rum_hosted_metadata <- generate_mags_metadata("C:/Users/marce/OneDrive/converted_anot/rum_hosted_gl/", "Ruminococcaceae", "hosted")
+
+rum_eng_metadata <- generate_mags_metadata("C:/Users/marce/OneDrive/converted_anot/rum_eng_gl/", "Ruminococcaceae", "engineered")
+
+lac_hosted_metadata <- generate_mags_metadata("C:/Users/marce/OneDrive/converted_anot/lac_hosted_gl/", "Lactobacillaceae", "hosted")
+
+lac_eng_metadata <- generate_mags_metadata("C:/Users/marce/OneDrive/converted_anot/lac_eng_gl/", "Lactobacillaceae", "engineered")
+
+
+genes_metadata <- bind_rows(clos_hosted_metadata, clos_eng_metadata,
+                            rum_hosted_metadata, rum_eng_metadata,
+                            lac_hosted_metadata, lac_eng_metadata)
+
+genes_metadata
+
+
+write.table(genes_metadata, file = "C:/Users/marce/Desktop/genes_metadata.txt", col.names = TRUE, row.names = FALSE, quote=FALSE)
 
 ###################################################################################################
 ###################################################################################################
@@ -132,21 +175,7 @@ lac_eng_genes <- get_all_mags_genes("C:/Users/marce/Downloads/converted_anot/lac
 ###################################################################################################
 
 
-genes_joined <- full_join(clos_hosted_genes, clos_eng_genes, by = "genes")
 
-genes_joined <- full_join(genes_joined, rum_hosted_genes, by = "genes")
-
-genes_joined <- full_join(genes_joined, rum_eng_genes, by = "genes")
-
-genes_joined <- full_join(genes_joined, lac_hosted_genes, by = "genes")
-
-genes_joined <- full_join(genes_joined, lac_eng_genes, by = "genes")
-
-genes_joined[is.na(genes_joined)] <- 0
-
-genes_joined
-
-write.table(genes_joined, file = "C:/Users/marce/Desktop/genes_df.txt", col.names = TRUE, row.names = FALSE, quote=FALSE)
 
 
 
@@ -177,6 +206,6 @@ sum(lac_eng_genes[lac_eng_genes$ASM386229 > 0,]$ASM386229)
 
 # checando el df final
 
-genes_joined[genes_joined$genes =="K10831",]
+genes_df[genes_df$genes =="K10831",]
 
-sum(genes_joined[genes_joined$ASM386229 > 0,]$ASM386229)
+sum(genes_df[genes_df$ASM386229 > 0,]$ASM386229)
