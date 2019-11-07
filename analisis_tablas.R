@@ -131,7 +131,7 @@ write.table(genes_df, file = "C:/Users/marce/Desktop/genes_df.txt", col.names = 
 
 ### generate metadata
 
-clos_hosted_metadata <-generate_mags_metadata("C:/Users/marce/Downloads/converted_anot/clos_hosted_gl/", "Clostridiaceae", "hosted")
+clos_hosted_metadata <-generate_mags_metadata("C:/Users/marce/OneDrive/converted_anot/clos_hosted_gl/", "Clostridiaceae", "hosted")
 
 clos_eng_metadata <- generate_mags_metadata("C:/Users/marce/OneDrive/converted_anot/clos_eng_gl/", "Clostridiaceae", "engineered")
 
