@@ -153,9 +153,9 @@ genes_metadata
 
 write.table(genes_metadata, file = "C:/Users/marce/Desktop/genes_metadata.txt", col.names = TRUE, row.names = FALSE, quote=FALSE)
 
-###################################################################################################
-###################################################################################################
-###################################################################################################
+###################################################################################################################################
+###################################################################################################################################
+###################################################################################################################################
 
 clos_hosted_genes <-get_all_mags_genes("C:/Users/marce/Downloads/converted_anot/clos_hosted_gl/")
 
@@ -170,9 +170,68 @@ lac_hosted_genes <- get_all_mags_genes("C:/Users/marce/Downloads/converted_anot/
 lac_eng_genes <- get_all_mags_genes("C:/Users/marce/Downloads/converted_anot/lac_eng_gl/")
 
 
-###################################################################################################
-###################################################################################################
-###################################################################################################
+clos_genes <- full_join(clos_hosted_genes, clos_eng_genes, by = "genes")
+
+clos_genes[is.na(clos_genes)] <- 0
+
+write.table(clos_genes, file = "C:/Users/marce/Desktop/clos_genes.txt", col.names = TRUE, row.names = FALSE, quote=FALSE)
+
+
+rum_genes <- full_join(rum_hosted_genes, rum_eng_genes, by = "genes")
+
+rum_genes[is.na(rum_genes)] <- 0
+
+write.table(rum_genes, file = "C:/Users/marce/Desktop/rum_genes.txt", col.names = TRUE, row.names = FALSE, quote=FALSE)
+
+
+
+lac_genes <- full_join(lac_hosted_genes, lac_eng_genes, by = "genes")
+
+lac_genes[is.na(lac_genes)] <- 0
+
+write.table(lac_genes, file = "C:/Users/marce/Desktop/lac_genes.txt", col.names = TRUE, row.names = FALSE, quote=FALSE)
+
+
+
+
+
+### generate metadata
+
+clos_hosted_metadata <-generate_mags_metadata("C:/Users/marce/Downloads/converted_anot/clos_hosted_gl/", "Clostridiaceae", "hosted")
+
+clos_eng_metadata <- generate_mags_metadata("C:/Users/marce/Downloads/converted_anot/clos_eng_gl/", "Clostridiaceae", "engineered")
+
+rum_hosted_metadata <- generate_mags_metadata("C:/Users/marce/Downloads/converted_anot/rum_hosted_gl/", "Ruminococcaceae", "hosted")
+
+rum_eng_metadata <- generate_mags_metadata("C:/Users/marce/Downloads/converted_anot/rum_eng_gl/", "Ruminococcaceae", "engineered")
+
+lac_hosted_metadata <- generate_mags_metadata("C:/Users/marce/Downloads/converted_anot/lac_hosted_gl/", "Lactobacillaceae", "hosted")
+
+lac_eng_metadata <- generate_mags_metadata("C:/Users/marce/Downloads/converted_anot/lac_eng_gl/", "Lactobacillaceae", "engineered")
+
+
+
+
+clos_metadata <- bind_rows(clos_hosted_metadata, clos_eng_metadata)
+
+write.table(clos_metadata, file = "C:/Users/marce/Desktop/clos_metadata.txt", col.names = TRUE, row.names = FALSE, quote=FALSE)
+
+
+rum_metadata <- bind_rows(rum_hosted_metadata, rum_eng_metadata)
+
+write.table(rum_metadata, file = "C:/Users/marce/Desktop/rum_metadata.txt", col.names = TRUE, row.names = FALSE, quote=FALSE)
+
+
+
+lac_metadata <- bind_rows(lac_hosted_metadata, lac_eng_metadata)
+
+write.table(lac_metadata, file = "C:/Users/marce/Desktop/lac_metadata.txt", col.names = TRUE, row.names = FALSE, quote=FALSE)
+
+
+
+###################################################################################################################################
+###################################################################################################################################
+###################################################################################################################################
 
 
 
