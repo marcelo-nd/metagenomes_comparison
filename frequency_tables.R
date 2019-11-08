@@ -1,24 +1,24 @@
 library(dplyr)
 
-# Funci髇 para hacer subset de la l韓ea de texto desde la derecha.
+# Funci贸n para hacer subset de la l铆nea de texto desde la derecha.
 substrRight <- function(x, n){
   substr(x, nchar(x)-n+1, nchar(x))
 }
 
 
-# funci髇 para obtener vector con todos los genes de un archivo de genes, kegg ids. Input: archivo txt
+# funci贸n para obtener vector con todos los genes de un archivo de genes, kegg ids. Input: archivo txt
 get_genes_list <- function(genes_file){
   # vector para guardar la lista de genes en kegg id
   genes_vector <- c()
   
-  # leer todas las l韓eas del archivo (da una lista)
+  # leer todas las l铆neas del archivo (da una lista)
   current_file_lines_list <- readLines(genes_file)
   
   for(linea in current_file_lines_list){
     # tomar el nombre de cada gen.
     current_split_line <- strsplit(linea, split = "\t")
     if (length(current_split_line[[1]]) == 2) {
-      # a馻dir el nombre de cada gen al vector de genes.
+      # a帽adir el nombre de cada gen al vector de genes.
       genes_vector <- c(as.character(genes_vector), as.character(current_split_line[[1]][2]))
     }
   }
@@ -26,7 +26,7 @@ get_genes_list <- function(genes_file){
 }
 
 
-## Funci髇 que lee todos los archivos de anotaciones de MAGs convertidas a keggs ids en un path
+## Funci贸n que lee todos los archivos de anotaciones de MAGs convertidas a keggs ids en un path
 # y devuelve un df [genes kegg ids, MAGs]
 
 get_all_mags_genes <- function(path_to_files){
@@ -51,7 +51,7 @@ get_all_mags_genes <- function(path_to_files){
       #print(current_gene_list)
       #print(length(current_gene_list))
       
-      # a馻dir nombre del mag y lista de genes 
+      # a帽adir nombre del mag y lista de genes 
       current_genes_df <- as.data.frame(table(current_gene_list), stringsAsFactors = FALSE)
       
       #debug print(current_genes_df[current_genes_df$current_gene_list == "K10831",])
@@ -73,7 +73,7 @@ get_all_mags_genes <- function(path_to_files){
   return(mags_genes)
 }
 
-# funci髇 para generar los metadatos de origen y familia para todos los Mags en un folder
+# funci贸n para generar los metadatos de origen y familia para todos los Mags en un folder
 
 generate_mags_metadata <- function(path_to_files, pFamily, pOrigin){
   #lista de todos los archivos en el path
@@ -246,7 +246,7 @@ write.table(lac_metadata, file = "C:/Users/marce/Desktop/lac_metadata.txt", col.
 ###################################################################################################
 ###################################################################################################
 #TESTS
-# Probando la extracci髇 de los genes
+# Probando la extracci贸n de los genes
 lista_test <- get_genes_list("C:/Users/marce/Downloads/converted_anot/lac_eng_gl/ASM386229.txt")
 lista_test
 
