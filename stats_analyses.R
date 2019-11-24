@@ -45,7 +45,7 @@ pairwise.adonis(genes_mods[,3:147],genes_mods$family_origin)
 
 ######### Pruebas t 
 
-# función para sacar sólo las pruebas t significativas ajustadas por multiples comparaciones con BH
+# función para sacar sólo las pruebas t significativas ajustadas por multiples comparaciones con correción BH
 
 get_significant_tests <- function(tests_list){
   pvalues <- c()
@@ -141,6 +141,7 @@ lac_paths_tests <- lapply(lac_paths[,3:124], function(x) tryCatch(wilcox.test(x 
 lac_metab_tests <- lapply(lac_metab[,3:13], function(x) tryCatch(wilcox.test(x ~ lac_paths$family_origin, correct=FALSE), error=function(e) NULL))
 
 
+
 get_significant_tests(lac_cog_tests)
 
 get_significant_tests(lac_mods_tests)
@@ -170,6 +171,7 @@ rum_mods_tests <- lapply(rum_mods[,3:147], function(x) tryCatch(wilcox.test(x ~ 
 rum_paths_tests <- lapply(rum_paths[,3:124], function(x) tryCatch(wilcox.test(x ~ rum_paths$family_origin, correct=FALSE), error=function(e) NULL))
 
 rum_metab_tests <- lapply(rum_metab[,3:13], function(x) tryCatch(wilcox.test(x ~ rum_paths$family_origin, correct=FALSE), error=function(e) NULL))
+
 
 
 get_significant_tests(rum_cog_tests)
