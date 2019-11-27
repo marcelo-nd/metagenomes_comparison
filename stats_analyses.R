@@ -100,13 +100,13 @@ clost_metab <- genes_metab[genes_metab$family_origin == "Clostridiaceae_engineer
 
 # pruebas t entre "hosted" y "engineered" para todos los niveles de clasificación
 
-clost_cog_tests <- lapply(clost_cog[,3:22], function(x) tryCatch(wilcox.test(x ~ clost_paths$family_origin, correct=FALSE), error=function(e) NULL))
+clost_cog_tests <- lapply(clost_cog[,3:22], function(x) tryCatch(wilcox.test(x ~ clost_cog$family_origin, correct=FALSE), error=function(e) NULL))
 
-clost_mods_tests <- lapply(clost_mods[,3:147], function(x) tryCatch(wilcox.test(x ~ clost_paths$family_origin, correct=FALSE), error=function(e) NULL))
+clost_mods_tests <- lapply(clost_mods[,3:147], function(x) tryCatch(wilcox.test(x ~ clost_mods$family_origin, correct=FALSE), error=function(e) NULL))
 
 clost_paths_tests <- lapply(clost_paths[,3:124], function(x) tryCatch(wilcox.test(x ~ clost_paths$family_origin, correct=FALSE), error=function(e) NULL))
 
-clost_metab_tests <- lapply(clost_metab[,3:13], function(x) tryCatch(wilcox.test(x ~ clost_paths$family_origin, correct=FALSE), error=function(e) NULL))
+clost_metab_tests <- lapply(clost_metab[,3:13], function(x) tryCatch(wilcox.test(x ~ clost_metab$family_origin, correct=FALSE), error=function(e) NULL))
 
 
 get_significant_tests(clost_cog_tests)
@@ -132,14 +132,13 @@ lac_metab <- genes_metab[genes_metab$family_origin == "Lactobacillaceae_engineer
 
 # pruebas t entre "hosted" y "engineered" para todos los niveles de clasificación
 
-lac_cog_tests <- lapply(lac_cog[,3:22], function(x) tryCatch(wilcox.test(x ~ lac_paths$family_origin, correct=FALSE), error=function(e) NULL))
+lac_cog_tests <- lapply(lac_cog[,3:22], function(x) tryCatch(wilcox.test(x ~ lac_cog$family_origin, correct=FALSE), error=function(e) NULL))
 
-lac_mods_tests <- lapply(lac_mods[,3:147], function(x) tryCatch(wilcox.test(x ~ lac_paths$family_origin, correct=FALSE), error=function(e) NULL))
+lac_mods_tests <- lapply(lac_mods[,3:147], function(x) tryCatch(wilcox.test(x ~ lac_mods$family_origin, correct=FALSE), error=function(e) NULL))
 
 lac_paths_tests <- lapply(lac_paths[,3:124], function(x) tryCatch(wilcox.test(x ~ lac_paths$family_origin, correct=FALSE), error=function(e) NULL))
 
-lac_metab_tests <- lapply(lac_metab[,3:13], function(x) tryCatch(wilcox.test(x ~ lac_paths$family_origin, correct=FALSE), error=function(e) NULL))
-
+lac_metab_tests <- lapply(lac_metab[,3:13], function(x) tryCatch(wilcox.test(x ~ lac_metab$family_origin, correct=FALSE), error=function(e) NULL))
 
 
 get_significant_tests(lac_cog_tests)
@@ -164,13 +163,13 @@ rum_metab <- genes_metab[genes_metab$family_origin == "Ruminococcaceae_engineere
 
 # pruebas t entre "hosted" y "engineered" para todos los niveles de clasificación
 
-rum_cog_tests <- lapply(rum_cog[,3:22], function(x) tryCatch(wilcox.test(x ~ rum_paths$family_origin, correct=FALSE), error=function(e) NULL))
+rum_cog_tests <- lapply(rum_cog[,3:22], function(x) tryCatch(wilcox.test(x ~ rum_cog$family_origin, correct=FALSE), error=function(e) NULL))
 
 rum_mods_tests <- lapply(rum_mods[,3:147], function(x) tryCatch(wilcox.test(x ~ rum_paths$family_origin, correct=FALSE), error=function(e) NULL))
 
 rum_paths_tests <- lapply(rum_paths[,3:124], function(x) tryCatch(wilcox.test(x ~ rum_paths$family_origin, correct=FALSE), error=function(e) NULL))
 
-rum_metab_tests <- lapply(rum_metab[,3:13], function(x) tryCatch(wilcox.test(x ~ rum_paths$family_origin, correct=FALSE), error=function(e) NULL))
+rum_metab_tests <- lapply(rum_metab[,3:13], function(x) tryCatch(wilcox.test(x ~ rum_metab$family_origin, correct=FALSE), error=function(e) NULL))
 
 
 
